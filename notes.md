@@ -1,5 +1,81 @@
 
 
-save the weather status dfs so save time in future
-add condition to check for specific year and load from there instead of the website
+Think about the power and threshold to use
 
+
+# Conditions
+## Define valid ranges for each column
+I noticed some values are not possible (temperatures and dewpoints below -273 deg C). I will use the following for the acceptable ranges.
+
+
+|               | Min  | Max    | Note                                                                          |
+|---------------|------|--------|-------------------------------------------------------------------------------|
+| Temperature   | -273 | 40     | below -273 &deg;C not possible, max temperature ever on Maui was less than 40 |
+| Humidity      | 0    | 100    |                                                                               |
+| Wind Speed    | 0    | 100    |                                                                               |
+| Visibility    | 0    | 100000 |                                                                               |
+| Precipitation | 0    | 100    |                                                                               |
+|  Dew Point    | -273 | T      | Dew point can't be higher than the temperature                                |
+
+## Thresolds to use
+|      | Units | Green | Yellow | Red |
+|:-----|------:|------:|-------:|-----|
+|date | YYYY-MM-DD HH\:mm\:ss | N/A | N/A | N/A |
+|temperature| &deg;C |  N/A | N/A | N/A  |
+|humidity|% | <75 | \[75-85) | >85 |
+|wind_speed| m/s | sustained < 10 | | > 12 |
+|          |     | gusts < 15 | | > 15 |
+|visibility| meters | =50000 | | <40000 |
+|precipitation| inches | =0 | | > 0 |
+|dewpoint| &deg;C | > 6 | | < 3 |
+
+
+
+
+# Steps
+
+## (Opt) Create a thresholds file to read from
+
+## Read data convert to weather status hours
+1. Get urls 
+2. Read single year file 
+3. convert '\N' to NaN
+4. drop uniteresting columns
+4. convert date_time column from str to datetime
+5. sep sust wind and gusts - if 10min = 0 wind_speed is sustained, otherwise it is gusts, need to get 2 min average
+5. check values of columns to see if they are in expected ranges
+    - (opt) write a report to view summar of year (any major 
+concerns?)
+    - record how many values are outside the range
+6. (opt) add 'status' columns for each weather condition with threshold
+    - this could be for further analysis of what causes the most red weather conditions
+7. add 'status' column for overal weather condition
+8. For every change in weather status get the start and stop times
+9. for each day sum the hours of each weather condition
+10. save the daily hours for future use
+
+## Build arrays for each month and weather condition
+1. Load all the saved daily hours for each condition
+2. build 12 arrays, one for each month containing the daily hours of green weather - grab corresponding data points
+    - (opt) also build arrays for yellow and red weather
+
+
+## Hypothesis test
+1. Use the arrays of daily green hours for each month for a hypothesis test.
+```
+1. Scientific Question: Does one month have a higher average daily green weather hours than the others?
+
+2. $H_0$: There is no segnificant difference between the average daily green weather hours each month
+
+3. $H_a$: multiple combinations (12 choose 2) : mean hours of month A > mean hours of month B 
+
+4. Create a Probabilistic Model of the Situation Assuming the Null Hypothesis is True
+
+5. Decide how Surprised You Need to Be to Reject Your Skeptical Assumption - apply Bonferroni correction
+
+6. Collect Your Data - done
+
+7. Calculate the Probability of Finding a Result Equally or More Extreme than Actually Observed Assuming the Null Hypothesis is True
+
+8. Compare the p-value to Your Stated Rejection Threshold
+```
