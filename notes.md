@@ -1,7 +1,9 @@
 
-
-Think about the power and threshold to use
-
+# TODAY
+Think about the power and threshold to use  
+Review hypothesis testing - Bonferonni correction  
+Normalize the daily hours numbers to total 24 hours in a day.   
+Wrangle the data a little more to build arrays for each month with all the daily green hours
 
 # Conditions
 ## Define valid ranges for each column
@@ -22,12 +24,12 @@ I noticed some values are not possible (temperatures and dewpoints below -273 de
 |:-----|------:|------:|-------:|-----|
 |date | YYYY-MM-DD HH\:mm\:ss | N/A | N/A | N/A |
 |temperature| &deg;C |  N/A | N/A | N/A  |
-|humidity|% | <75 | \[75-85) | >85 |
-|wind_speed| m/s | sustained < 10 | | > 12 |
-|          |     | gusts < 15 | | > 15 |
-|visibility| meters | =50000 | | <40000 |
-|precipitation| inches | =0 | | > 0 |
-|dewpoint| &deg;C | > 6 | | < 3 |
+|humidity|% | <=75 | \[75-85) | >85 |
+|wind_speed| m/s | sustained <= 10 | | > 12 |
+|          |     | gusts <= 15 | | > 15 |
+|visibility| meters | >=50000 | | <40000 |
+|precipitation| inches | <=0 | | > 0 |
+|delta dewpoint| &deg;C | > 6 | | < 3 |
 
 
 
@@ -56,7 +58,8 @@ concerns?)
 
 ## Build arrays for each month and weather condition
 1. Load all the saved daily hours for each condition
-2. build 12 arrays, one for each month containing the daily hours of green weather - grab corresponding data points
+2. Normalize the daily hours and multipy each by 24 so the total hours for each day is 24.
+3. build 12 arrays, one for each month containing the daily hours of green weather - grab corresponding data points
     - (opt) also build arrays for yellow and red weather
 
 
@@ -79,3 +82,8 @@ concerns?)
 
 8. Compare the p-value to Your Stated Rejection Threshold
 ```
+
+# Elevator Pitch
+Ground based optical observatories require mostly clear skies and good weather conditions in order to make space observations.   
+How good the weather conditions need to be is dependent on the site and equipment in use.   When weather conditions meet the required threshold, it is referred to as green weather, meaning "go for operations."   
+I am investigating the daily green weather hours for the summit of Haleakalā, a dormant volcano in Maui; with the goal of determining if one month has more green weather on average than the others.

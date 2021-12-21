@@ -2,6 +2,8 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
+import os
+import glob
 
 def get_csv_file_links(base_url):
     '''
@@ -131,7 +133,7 @@ def remove_unreasonable_measurements(df,range_limits={
     if not inplace:
         return df_new
 
-# Note this does not work for Green status if there are NaNs
+# MVP just consider any NaN measurements 
 def get_weather_status(df,thresholds):
     '''
     Determine the weather status (Green,Yellow, or Red) based on the given thresholds
@@ -144,6 +146,7 @@ def get_weather_status(df,thresholds):
     status : Series
         Series of same length as df with corresponding status values as strings ('Green', 'Yellow', or 'Red')
     '''
+    # should break this up for readability
     status_conditions = [(
         (df['humidity'] > max(thresholds['humidity'])) | 
         (df['wind_sust'] > max(thresholds['wind_sust'])) | 
@@ -152,12 +155,12 @@ def get_weather_status(df,thresholds):
         (df['dewpoint_delta'] < min(thresholds['dewpoint_delta'])) | 
         (df['visibility'] < min(thresholds['visibility']))
         ),(
-        (df['humidity'] <= min(thresholds['humidity'])) &
-        (df['wind_sust'] <= min(thresholds['wind_sust'])) & 
-        (df['wind_gust'] <= min(thresholds['wind_gust'])) & 
-        (df['precipitation'] <= min(thresholds['precipitation'])) & 
-        (df['dewpoint_delta'] >= max(thresholds['dewpoint_delta'])) &
-        (df['visibility'] >= max(thresholds['visibility']))
+        ((df['humidity'].isna()) | (df['humidity'] <= min(thresholds['humidity']))) &
+        ((df['wind_sust'].isna()) | (df['wind_sust'] <= min(thresholds['wind_sust']))) & 
+        ((df['wind_gust'].isna()) | (df['wind_gust'] <= min(thresholds['wind_gust']))) & 
+        ((df['precipitation'].isna()) | (df['precipitation'] <= min(thresholds['precipitation']))) & 
+        ((df['dewpoint_delta'].isna()) | (df['dewpoint_delta'] >= max(thresholds['dewpoint_delta']))) &
+        ((df['visibility'].isna()) | (df['visibility'] >= max(thresholds['visibility'])))
         )]
     status_values = ['Red','Green']
     return np.select(status_conditions,status_values,default='Yellow')
@@ -167,8 +170,81 @@ def check_if_red(df,thresholds):
     '''
     pass
 
+# MVP just counts time based off the time step.
+def generate_status_hours_df(df):
+    '''
+    Parameters
+    ----------
+    df : 
+    Return
+    ------
+    new_df : 
+    '''
+    df['seconds'] = np.where(df['10min'],600,10)
+    df['date'] = df.index.date
+    new_df = pd.DataFrame(columns = ['Green','Yellow','Red'],index=df['date'].unique().tolist())
+    new_df.index.name = 'date'
+    for status in new_df.columns:
+        new_df[status] = (df[df.status==status].groupby(['date']).seconds.sum()) / 3600
+    return new_df
 
+def save_df_to_csv(df,year,base_path='data/'):
+    '''
+    '''
+    filename = os.path.join(base_path,f'status_hours_{year}.csv')
+    df.to_csv(filename)
 
+def combine_status_hour_dfs(base_path='data/'):
+    '''
+    Loads the data from all the individual year CVS files into a single Data Frame
+    Parameters
+    ----------
+    base_path : str
+        Directory path to location of the status hours CSV files.
+    Returns
+    -------
+    df : DataFrame
+    '''
+    status_csv_files = sorted(glob.glob(os.path.join(base_path,'status_hours*.csv')))
+    df = pd.DataFrame()
+    for file in status_csv_files:
+        df_to_add = pd.read_csv(file)
+        # print()
+        # print(f'First day: {df_to_add.date.iloc[0]}')
+        # print(f'Last day : {df_to_add.date.iloc[-1]}')
+        # print(f'Length of df: {len(df_to_add)}')
+        df = pd.concat([df,df_to_add],ignore_index=True)
+    df['date'] = pd.to_datetime(df['date'])
+    df.set_index('date',inplace=True)
+    return df
+
+def normalize_daily_hours_to_24(df):
+    '''
+    Normalizes the hours of each status to 24.
+    Parameters
+    ----------
+    df : DataFrame
+    Returns
+    -------
+    normalized_df : DataFrame
+    '''
+    normalized_df = df.div(df.sum(axis=1),axis=0) * 24
+    return normalized_df
+
+def add_month_year_columns(df):
+    '''
+    Add columns indicating the month and the year to the data frame.
+    Parameters
+    ----------
+    df : DataFrame
+        df should have index of date-times named 'date' 
+    '''
+    months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    df.reset_index(inplace=True)
+    df['month'] = pd.Categorical(df['date'].dt.strftime('%b'),categories=months,ordered=True)
+    df['year'] = df['date'].dt.year
+    df.set_index('date',inplace=True)
+    pass
 
 if __name__ == "__main__":
     pass
