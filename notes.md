@@ -59,8 +59,7 @@ concerns?)
 ## Build arrays for each month and weather condition
 1. Load all the saved daily hours for each condition
 2. Normalize the daily hours and multipy each by 24 so the total hours for each day is 24.
-3. build 12 arrays, one for each month containing the daily hours of green weather - grab corresponding data points
-    - (opt) also build arrays for yellow and red weather
+3. add column for month to group and do comparisons
 
 
 ## Hypothesis test
@@ -68,7 +67,7 @@ concerns?)
 ```
 1. Scientific Question: Does one month have a higher average daily green weather hours than the others?
 
-2. $H_0$: There is no segnificant difference between the average daily green weather hours each month
+2. $H_0$: There is no significant difference between the average daily green weather hours each month
 
 3. $H_a$: multiple combinations (12 choose 2) : mean hours of month A > mean hours of month B 
 
@@ -87,3 +86,14 @@ concerns?)
 Ground based optical observatories require mostly clear skies and good weather conditions in order to make space observations.   
 How good the weather conditions need to be is dependent on the site and equipment in use.   When weather conditions meet the required threshold, it is referred to as green weather, meaning "go for operations."   
 I am investigating the daily green weather hours for the summit of Haleakalā, a dormant volcano in Maui; with the goal of determining if one month has more green weather on average than the others.
+
+## Want to add now
+1. Make config files for thresholds and range limits
+1. Ability to run analysis with different thresholds and save all results in new direcotry. 
+
+## Improvements for future
+1. Handle NaNs using nearest neighbors - build model to predict and test
+1. Other test better suited to cyclcical trends instead of discrete bins (such as months) - Chris was trying to think of what one was called. roh?
+
+## Other Notes
+- Power calculation for non parametric tests are messy and what I found still requires assumptions about the shape of the data that aren't true.

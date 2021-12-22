@@ -1,10 +1,11 @@
 import prep_data as prep
+import hypothesis_test as ht
 
 import os
 import glob
+from itertools import combinations
 
 
-# function to check if status hours csv files already exist for all data on IfA site (exclueding 1993 and 2020-1 right now)
 def prepped_data_exists(year,base_path='data/'):
     '''
     Check if prepped data file 'status_hours_XXXX.csv' exists
@@ -19,8 +20,6 @@ def prepped_data_exists(year,base_path='data/'):
     does_exist = os.path.exists(os.path.join(base_path,f'status_hours_{year}.csv'))
     return does_exist
 
-
-# function to grab and pre-process any year data not already prepped.
 def get_and_prep_data(url,range_limits,thresholds,save_results=True,save_path='data/',return_df=False):
     '''
     Pipeline to load raw csv file from the IfA archive, clean it, and prepare it by calculating the hours of green, yellow, and red weather.
@@ -123,4 +122,15 @@ if __name__ == "__main__":
     df = prep.combine_status_hour_dfs(base_path='data')
     df = prep.normalize_daily_hours_to_24(df)
     prep.add_month_year_columns(df)
-    print(df)
+    
+    # sort the months by mean
+    months_sorted_by_mean = ht.sort_dict_keys_by_values(ht.get_monthly_means(df))
+    combos = list(combinations(months_sorted_by_mean,2))
+    num_combos = len(combos)
+    alpha = 0.5 
+    FWER = 1 - (1 - alpha)**num_combos
+    print(f'The family-wise error rate for alpha={alpha} and {num_combos} combinations is: {FWER}')
+    alpha_adj = alpha / num_combos
+    print(f'Apply a Bonferroni correction and use an adjusted alpha of {alpha_adj:.5f}')
+    results = ht.mwu_test_month_combos(df,combos,alpha=alpha_adj,is_alpha_adjusted=True)
+    print(results)

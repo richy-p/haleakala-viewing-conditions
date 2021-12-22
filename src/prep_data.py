@@ -220,15 +220,16 @@ def combine_status_hour_dfs(base_path='data/'):
 
 def normalize_daily_hours_to_24(df):
     '''
-    Normalizes the hours of each status to 24.
+    Normalizes the hours of each status to 24 and replaces NaN with 0.
     Parameters
     ----------
     df : DataFrame
-    Returns
+    Returns  
     -------
     normalized_df : DataFrame
     '''
     normalized_df = df.div(df.sum(axis=1),axis=0) * 24
+    normalized_df.fillna({'Green': 0,'Yellow': 0,'Red':0},inplace=True)
     return normalized_df
 
 def add_month_year_columns(df):
