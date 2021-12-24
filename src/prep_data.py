@@ -92,20 +92,25 @@ def determine_wind_sust_and_gust(df):
     df['wind_gust'] = np.where(df['10min']==0,df['wind_speed'],np.nan)
     return df
 
-def count_NaNs(df):
+def count_NaNs(df,file=None):
     '''
     Count the number of NaNs in each column of the date frame.
     Parameters
     ----------
     df : DataFrame
+    f : file to write to, must be open and writable. If None, prints to terminal
     '''
     len_df = len(df)
     max_digits = int(np.log10(len_df) + 1)
-    print(f'Total rows          : {len_df}')
-    print('-----------------------------')
-    print('Number of NaNs per column:')
+    year = df.index[0].year
+    print(f'{year}',file=file)
+    print(f'Total rows          : {len_df}',file=file)
+    print('-----------------------------',file=file)
+    print(f'Column                 NaNs',file=file)
+    print('-----------------------------',file=file)
     for col in df:
-        print(f'{col:20}: {sum(df[col].isna()):{max_digits}}')  
+        print(f'{col:20}: {sum(df[col].isna()):{max_digits}}',file=file)  
+    print('-----------------------------',file=file)
 
 def remove_unreasonable_measurements(df,range_limits={
                     'temperature': (-273,40),
@@ -146,7 +151,6 @@ def get_weather_status(df,thresholds):
     status : Series
         Series of same length as df with corresponding status values as strings ('Green', 'Yellow', or 'Red')
     '''
-    # should break this up for readability
     status_conditions = [(
         (df['humidity'] > max(thresholds['humidity'])) | 
         (df['wind_sust'] > max(thresholds['wind_sust'])) | 
@@ -164,11 +168,6 @@ def get_weather_status(df,thresholds):
         )]
     status_values = ['Red','Green']
     return np.select(status_conditions,status_values,default='Yellow')
-
-def check_if_red(df,thresholds):
-    '''
-    '''
-    pass
 
 # MVP just counts time based off the time step.
 def generate_status_hours_df(df):
@@ -188,13 +187,9 @@ def generate_status_hours_df(df):
         new_df[status] = (df[df.status==status].groupby(['date']).seconds.sum()) / 3600
     return new_df
 
-def save_df_to_csv(df,year,base_path='data/'):
-    '''
-    '''
-    filename = os.path.join(base_path,f'status_hours_{year}.csv')
-    df.to_csv(filename)
 
-def combine_status_hour_dfs(base_path='data/'):
+
+def combine_status_hour_dfs(base_path):
     '''
     Loads the data from all the individual year CVS files into a single Data Frame
     Parameters

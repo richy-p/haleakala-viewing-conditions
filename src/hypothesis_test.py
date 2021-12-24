@@ -58,7 +58,7 @@ def mwu_test_month_combos(df, combos, column='Green', alpha=0.05, is_alpha_adjus
     '''
     if not is_alpha_adjusted:
         alpha = alpha/len(combos)
-        
+
     results = pd.DataFrame()
     for month1,month2 in combos:
         month1_values = df[df['month']==month1][column]

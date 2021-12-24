@@ -90,6 +90,7 @@ I am investigating the daily green weather hours for the summit of Haleakalā, a
 ## Want to add now
 1. Make config files for thresholds and range limits
 1. Ability to run analysis with different thresholds and save all results in new direcotry. 
+1. Look into what measurements are NaNs, how does it change over time
 
 ## Improvements for future
 1. Handle NaNs using nearest neighbors - build model to predict and test

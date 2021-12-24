@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # data files (will only include a subset)
-*.csv
+data/*.csv
 proposal/
 .vscode/
