@@ -76,22 +76,6 @@ def read_data_of_interest(link,column_names,columns_of_interest):
     df.set_index('date_time',inplace=True)
     return df
 
-def determine_wind_sust_and_gust(df):
-    '''
-    Determines if the 'wind_speed' is gusts or sustained. Will add additional columns to df for both. If 'wind_speed' is raw measurements the calculated sustained wind will be the rolling 2 min average. 
-    Parameters
-    ----------
-    df : DataFrame
-        df must contain datetimes as the index and the columns 'wind_speed' and '10min'. '10min' is a indicator that the measurement is a 10 min average.
-    Return
-    ------
-    df : DataFrame 
-        Additional colums 'wind_sust' and 'wind_gust' included. Note 'wind_gust' will be all NaN if the 'wind_speed' measurment was already a 10 min average
-    '''
-    df['wind_sust'] = np.where(df['10min']==1,df['wind_speed'],df.wind_speed.rolling('120s').mean())
-    df['wind_gust'] = np.where(df['10min']==0,df['wind_speed'],np.nan)
-    return df
-
 def count_NaNs(df,file=None):
     '''
     Count the number of NaNs in each column of the date frame.
@@ -111,15 +95,9 @@ def count_NaNs(df,file=None):
     for col in df:
         print(f'{col:20}: {sum(df[col].isna()):{max_digits}}',file=file)  
     print('-----------------------------',file=file)
+    pass
 
-def remove_unreasonable_measurements(df,range_limits={
-                    'temperature': (-273,40),
-                    'humidity': (0,100),
-                    'wind_speed': (0,100),
-                    'visibility': (0,100000),
-                    'precipitation': (0,100),
-                    'dewpoint': (-273,40)
-                    },inplace=False):
+def remove_unreasonable_measurements(df,range_limits,inplace=False):
     '''
     Check all values are reasonable and if not change to NaN
     Parameters
@@ -138,7 +116,22 @@ def remove_unreasonable_measurements(df,range_limits={
     if not inplace:
         return df_new
 
-# MVP just consider any NaN measurements 
+def determine_wind_sust_and_gust(df):
+    '''
+    Determines if the 'wind_speed' is gusts or sustained. Will add additional columns to df for both. If 'wind_speed' is raw measurements the calculated sustained wind will be the rolling 2 min average. 
+    Parameters
+    ----------
+    df : DataFrame
+        df must contain datetimes as the index and the columns 'wind_speed' and '10min'. '10min' is a indicator that the measurement is a 10 min average.
+    Return
+    ------
+    df : DataFrame 
+        Additional colums 'wind_sust' and 'wind_gust' included. Note 'wind_gust' will be all NaN if the 'wind_speed' measurment was already a 10 min average
+    '''
+    df['wind_sust'] = np.where(df['10min']==1,df['wind_speed'],df.wind_speed.rolling('120s').mean())
+    df['wind_gust'] = np.where(df['10min']==0,df['wind_speed'],np.nan)
+    return df
+
 def get_weather_status(df,thresholds):
     '''
     Determine the weather status (Green,Yellow, or Red) based on the given thresholds
@@ -169,15 +162,17 @@ def get_weather_status(df,thresholds):
     status_values = ['Red','Green']
     return np.select(status_conditions,status_values,default='Yellow')
 
-# MVP just counts time based off the time step.
 def generate_status_hours_df(df):
     '''
+
     Parameters
     ----------
-    df : 
+    df : DataFrame
+        Must contain datetime as index and columns: ['10min','status']. '10min' is bool and 'status' is either 'Green', 'Yellow', or 'Red'.
     Return
     ------
-    new_df : 
+    new_df : DataFrame
+        DataFrame with 'date' as index and columns: ['Green','Yellow','Red']. Values are the hours of each condition for each day.
     '''
     df['seconds'] = np.where(df['10min'],600,10)
     df['date'] = df.index.date
@@ -187,11 +182,9 @@ def generate_status_hours_df(df):
         new_df[status] = (df[df.status==status].groupby(['date']).seconds.sum()) / 3600
     return new_df
 
-
-
 def combine_status_hour_dfs(base_path):
     '''
-    Loads the data from all the individual year CVS files into a single Data Frame
+    Loads the data from all the individual year 'status_hours' CSV files into a single Data Frame
     Parameters
     ----------
     base_path : str
@@ -204,10 +197,6 @@ def combine_status_hour_dfs(base_path):
     df = pd.DataFrame()
     for file in status_csv_files:
         df_to_add = pd.read_csv(file)
-        # print()
-        # print(f'First day: {df_to_add.date.iloc[0]}')
-        # print(f'Last day : {df_to_add.date.iloc[-1]}')
-        # print(f'Length of df: {len(df_to_add)}')
         df = pd.concat([df,df_to_add],ignore_index=True)
     df['date'] = pd.to_datetime(df['date'])
     df.set_index('date',inplace=True)

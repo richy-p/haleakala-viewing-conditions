@@ -1,4 +1,3 @@
-from itertools import combinations
 import scipy.stats as stats
 import pandas as pd
 

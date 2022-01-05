@@ -51,7 +51,7 @@ def get_and_prep_data(url,range_limits,thresholds,save_results=True,save_path='d
     except:
         print(f'Failed to read data for {year} at: {url} ')
 
-    # record the number of NaNs for awareness, later anaylsis
+    # record the number of NaNs for awareness (possible later anaylsis)
     with open(os.path.join(results_run_dir,'run_info.txt'),'a') as f:
        print('',file=f) # print an empty line to break up the years
        prep.count_NaNs(df,f)
@@ -193,11 +193,11 @@ if __name__ == "__main__":
             }
 
     # Run 
-    # make results directory for current run
+    # make results directory for current run - allows for running multiple tests 
     results_run_dir = make_numbered_directory(parent_dir='results')
     data_run_dir = make_numbered_directory(parent_dir='data/status_hours')
 
-    # record the set up info
+    # record the set up info to a file
     with open(os.path.join(results_run_dir,'run_info.txt'),'a') as f:
         record_setup(thresholds,acceptable_ranges,f)
 
@@ -234,15 +234,15 @@ if __name__ == "__main__":
     months_sorted_by_mean = ht.sort_dict_keys_by_values(ht.get_monthly_means(df))
     combos = list(combinations(months_sorted_by_mean,2))
     num_combos = len(combos)
-    alpha = 0.5 
-    FWER = 1 - (1 - alpha)**num_combos
-    print(f'The family-wise error rate for alpha={alpha} and {num_combos} combinations is: {FWER}')
+    alpha = 0.05 
+    fwer = 1 - (1 - alpha)**num_combos
     alpha_adj = alpha / num_combos
-    print(f'Apply a Bonferroni correction and use an adjusted alpha of {alpha_adj:.5f}')
+    with open(os.path.join(results_run_dir,'run_info.txt'),'a') as f:
+        print(f'\nThe family-wise error rate for alpha={alpha} and {num_combos} combinations is: {fwer}',file=f)
+        print(f'Apply a Bonferroni correction and use an adjusted alpha of {alpha_adj:.5f}',file=f)
     results = ht.mwu_test_month_combos(df,combos,alpha=alpha_adj,is_alpha_adjusted=True)
-    print(results)
     save_df_to_csv(results,'hyp_test_results',results_run_dir)
 
-
+    # view significant results
     print(results[results['is_significant']==True].drop('is_significant',axis=1))
 

@@ -130,5 +130,6 @@ dmypy.json
 
 # data files (will only include a subset)
 data/*.csv
+status_hours_*.csv
 proposal/
 .vscode/
