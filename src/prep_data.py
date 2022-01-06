@@ -1,3 +1,5 @@
+import utilities as ut
+
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -32,6 +34,68 @@ def get_csv_file_links(base_url):
     if not csv_urls:
         print(f'No csv files found at {base_url}')
     return csv_urls
+
+def get_and_prep_data(url,range_limits,thresholds,save_results=True,save_path='data/',return_df=False):
+    '''
+    Pipeline to load raw csv file from the IfA archive, clean it, and prepare it by calculating the hours of green, yellow, and red weather.
+    Parameters
+    ----------
+    url : str
+        URL of the CSV file to read
+    range_limits : dict
+        lower and upper limits for each columns except the date_time
+    thresholds : dict
+        Must contain the columns above as keys with the values being a tuple with the green and red weather threshold values.
+    save_results : bool
+        if true, results saved in location given by save_path
+    save_path : str
+        location to store the df with the status hours
+    return_df : bool
+        if true, returns the df with the calculated status hours
+    '''
+    # data column names
+    column_names = ['date_time','temperature','pressure','humidity','wind_speed','wind_direction','visibility','co2','insolation','vertical_wind_speed','precipitation','10min','dewpoint']
+    columns_of_interest = ['date_time','temperature','humidity','wind_speed','visibility','precipitation','dewpoint','10min']
+
+    year = url.split('/')[-1].split('.')[0]
+    try:
+        # read data
+        df = read_data_of_interest(url,column_names,columns_of_interest)
+        print(f'{year} data read, processing now.')
+    except:
+        print(f'Failed to read data for {year} at: {url} ')
+
+    # record the number of NaNs for awareness (possible later anaylsis)
+    with open(os.path.join(save_path,'NaN_info.txt'),'a') as f:
+       print('',file=f) # print an empty line to break up the years
+       count_NaNs(df,f)
+
+    # check for reasonable values
+    remove_unreasonable_measurements(df,range_limits,inplace=True)
+    
+    # split wind into sustaind and gusts
+    df = determine_wind_sust_and_gust(df)
+
+    # add delta dew point
+    df['dewpoint_delta'] = df['temperature'] - df['dewpoint']
+
+    # convert thresholds to status
+    df['status'] = get_weather_status(df,thresholds)
+
+    # record NaNs after prepping data (will now include values removed outside limit range)
+    with open(os.path.join(save_path,'NaN_info.txt'),'a') as f:
+       print('After prep',file=f)
+       count_NaNs(df,f)
+
+    # make new df with daily hours
+    df_status_hours = generate_status_hours_df(df)
+
+    print(f'{year} data prep complete\n')
+    # save new df
+    if save_results:
+        ut.save_df_to_csv(df_status_hours,f'status_hours_{year}',save_path=save_path)
+    if return_df:
+        return df_status_hours
 
 def get_specific_year(year,url_list):
     '''
@@ -76,45 +140,28 @@ def read_data_of_interest(link,column_names,columns_of_interest):
     df.set_index('date_time',inplace=True)
     return df
 
-def determine_wind_sust_and_gust(df):
-    '''
-    Determines if the 'wind_speed' is gusts or sustained. Will add additional columns to df for both. If 'wind_speed' is raw measurements the calculated sustained wind will be the rolling 2 min average. 
-    Parameters
-    ----------
-    df : DataFrame
-        df must contain datetimes as the index and the columns 'wind_speed' and '10min'. '10min' is a indicator that the measurement is a 10 min average.
-    Return
-    ------
-    df : DataFrame 
-        Additional colums 'wind_sust' and 'wind_gust' included. Note 'wind_gust' will be all NaN if the 'wind_speed' measurment was already a 10 min average
-    '''
-    df['wind_sust'] = np.where(df['10min']==1,df['wind_speed'],df.wind_speed.rolling('120s').mean())
-    df['wind_gust'] = np.where(df['10min']==0,df['wind_speed'],np.nan)
-    return df
-
-def count_NaNs(df):
+def count_NaNs(df,file=None):
     '''
     Count the number of NaNs in each column of the date frame.
     Parameters
     ----------
     df : DataFrame
+    f : file to write to, must be open and writable. If None, prints to terminal
     '''
     len_df = len(df)
     max_digits = int(np.log10(len_df) + 1)
-    print(f'Total rows          : {len_df}')
-    print('-----------------------------')
-    print('Number of NaNs per column:')
+    year = df.index[0].year
+    print(f'{year}',file=file)
+    print(f'Total rows          : {len_df}',file=file)
+    print('-----------------------------',file=file)
+    print(f'Column                 NaNs',file=file)
+    print('-----------------------------',file=file)
     for col in df:
-        print(f'{col:20}: {sum(df[col].isna()):{max_digits}}')  
+        print(f'{col:20}: {sum(df[col].isna()):{max_digits}}',file=file)  
+    print('-----------------------------',file=file)
+    pass
 
-def remove_unreasonable_measurements(df,range_limits={
-                    'temperature': (-273,40),
-                    'humidity': (0,100),
-                    'wind_speed': (0,100),
-                    'visibility': (0,100000),
-                    'precipitation': (0,100),
-                    'dewpoint': (-273,40)
-                    },inplace=False):
+def remove_unreasonable_measurements(df,range_limits,inplace=False):
     '''
     Check all values are reasonable and if not change to NaN
     Parameters
@@ -133,7 +180,22 @@ def remove_unreasonable_measurements(df,range_limits={
     if not inplace:
         return df_new
 
-# MVP just consider any NaN measurements 
+def determine_wind_sust_and_gust(df):
+    '''
+    Determines if the 'wind_speed' is gusts or sustained. Will add additional columns to df for both. If 'wind_speed' is raw measurements the calculated sustained wind will be the rolling 2 min average. 
+    Parameters
+    ----------
+    df : DataFrame
+        df must contain datetimes as the index and the columns 'wind_speed' and '10min'. '10min' is a indicator that the measurement is a 10 min average.
+    Return
+    ------
+    df : DataFrame 
+        Additional colums 'wind_sust' and 'wind_gust' included. Note 'wind_gust' will be all NaN if the 'wind_speed' measurment was already a 10 min average
+    '''
+    df['wind_sust'] = np.where(df['10min']==1,df['wind_speed'],df.wind_speed.rolling('120s').mean())
+    df['wind_gust'] = np.where(df['10min']==0,df['wind_speed'],np.nan)
+    return df
+
 def get_weather_status(df,thresholds):
     '''
     Determine the weather status (Green,Yellow, or Red) based on the given thresholds
@@ -146,7 +208,6 @@ def get_weather_status(df,thresholds):
     status : Series
         Series of same length as df with corresponding status values as strings ('Green', 'Yellow', or 'Red')
     '''
-    # should break this up for readability
     status_conditions = [(
         (df['humidity'] > max(thresholds['humidity'])) | 
         (df['wind_sust'] > max(thresholds['wind_sust'])) | 
@@ -165,20 +226,17 @@ def get_weather_status(df,thresholds):
     status_values = ['Red','Green']
     return np.select(status_conditions,status_values,default='Yellow')
 
-def check_if_red(df,thresholds):
-    '''
-    '''
-    pass
-
-# MVP just counts time based off the time step.
 def generate_status_hours_df(df):
     '''
+
     Parameters
     ----------
-    df : 
+    df : DataFrame
+        Must contain datetime as index and columns: ['10min','status']. '10min' is bool and 'status' is either 'Green', 'Yellow', or 'Red'.
     Return
     ------
-    new_df : 
+    new_df : DataFrame
+        DataFrame with 'date' as index and columns: ['Green','Yellow','Red']. Values are the hours of each condition for each day.
     '''
     df['seconds'] = np.where(df['10min'],600,10)
     df['date'] = df.index.date
@@ -188,15 +246,9 @@ def generate_status_hours_df(df):
         new_df[status] = (df[df.status==status].groupby(['date']).seconds.sum()) / 3600
     return new_df
 
-def save_df_to_csv(df,year,base_path='data/'):
+def combine_status_hour_dfs(base_path):
     '''
-    '''
-    filename = os.path.join(base_path,f'status_hours_{year}.csv')
-    df.to_csv(filename)
-
-def combine_status_hour_dfs(base_path='data/'):
-    '''
-    Loads the data from all the individual year CVS files into a single Data Frame
+    Loads the data from all the individual year 'status_hours' CSV files into a single Data Frame
     Parameters
     ----------
     base_path : str
@@ -209,10 +261,6 @@ def combine_status_hour_dfs(base_path='data/'):
     df = pd.DataFrame()
     for file in status_csv_files:
         df_to_add = pd.read_csv(file)
-        # print()
-        # print(f'First day: {df_to_add.date.iloc[0]}')
-        # print(f'Last day : {df_to_add.date.iloc[-1]}')
-        # print(f'Length of df: {len(df_to_add)}')
         df = pd.concat([df,df_to_add],ignore_index=True)
     df['date'] = pd.to_datetime(df['date'])
     df.set_index('date',inplace=True)
@@ -248,4 +296,70 @@ def add_month_year_columns(df):
     pass
 
 if __name__ == "__main__":
-    pass
+    # set testing to True to just use smaller data sets from 1994-2005
+    testing = False
+    
+    # skip years that don't have data (1993) or have formatting issues (2020-2021)
+    skip_years = {1993,2020,2021}
+    if testing:
+        # use smaller data set to run for testing
+        skip_years.update(set(range(2006,2020,1)))
+        
+
+    # Establish required info
+    # link for data files
+    base_url = "http://kopiko.ifa.hawaii.edu/weather/archivedata/"
+    
+    # Define reasonable ranges for each column
+    acceptable_ranges = {
+        'temperature': (-273,40),
+        'humidity': (0,100),
+        'wind_speed': (0,100),
+        'visibility': (0,100000),
+        'precipitation': (0,100),
+        'dewpoint': (-273,40)
+        }
+    # Define the thresholds for ('Green', 'Red') weather - plan to use config file in future
+    thresholds = {
+            'humidity': (75,85),
+            'wind_sust': (10,12),
+            'wind_gust': (15,15),
+            'visibility': (50000,40000),
+            'precipitation': (0,0),
+            'dewpoint_delta': (6,3)
+            }
+
+    # Run 
+    # make directory for current run - allows for running multiple tests 
+    data_dir = ut.make_numbered_directory(parent_dir='data',base_name='prepped_data')
+
+
+
+    # get list of all data file urls
+    csv_urls = get_csv_file_links(base_url)
+
+    # prep all data
+    # prep_all_available_data(csv_urls,acceptable_ranges,thresholds,save_results=True,save_path=data_dir) 
+    for url in csv_urls:
+        year = url.split('/')[-1].split('.')[0]
+        if int(year) in skip_years:
+            continue
+        # if prepped data file already exist for that year skip it
+        elif ut.prepped_data_exists(year,base_path=data_dir):
+            print(f'{year} data already prepped.')
+            continue
+        else:
+            get_and_prep_data(url,acceptable_ranges,thresholds,save_results=True,save_path=data_dir)
+            
+    # record the set up info to a file
+    years = ut.get_years(data_dir)
+    with open(os.path.join(data_dir,'run_info.txt'),'a') as f:
+        ut.record_setup(thresholds,acceptable_ranges,years,f)
+
+
+    # combine the daily status hours for all years into one df
+    df = combine_status_hour_dfs(base_path=data_dir)
+    df = normalize_daily_hours_to_24(df)
+    add_month_year_columns(df)
+    ut.save_df_to_csv(df,'combined_status_hours',data_dir)
+

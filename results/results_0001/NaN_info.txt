@@ -1,0 +1,864 @@
+
+1994
+Total rows          : 14025
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            : 14025
+wind_speed          :     0
+visibility          : 14025
+precipitation       :     0
+dewpoint            : 14025
+10min               :     0
+-----------------------------
+After prep
+1994
+Total rows          : 14025
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     3
+humidity            : 14025
+wind_speed          :     0
+visibility          : 14025
+precipitation       :     0
+dewpoint            : 14025
+10min               :     0
+wind_sust           :     0
+wind_gust           : 14025
+dewpoint_delta      : 14025
+status              :     0
+-----------------------------
+
+1995
+Total rows          : 47400
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            : 47400
+wind_speed          :     0
+visibility          : 47400
+precipitation       :     0
+dewpoint            : 47400
+10min               :     0
+-----------------------------
+After prep
+1995
+Total rows          : 47400
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            : 47400
+wind_speed          :     0
+visibility          : 47400
+precipitation       :     0
+dewpoint            : 47400
+10min               :     0
+wind_sust           :     0
+wind_gust           : 47400
+dewpoint_delta      : 47400
+status              :     0
+-----------------------------
+
+1996
+Total rows          : 52033
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            : 52033
+wind_speed          :     0
+visibility          : 52033
+precipitation       :     0
+dewpoint            : 52033
+10min               :     0
+-----------------------------
+After prep
+1996
+Total rows          : 52033
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   119
+humidity            : 52033
+wind_speed          :     0
+visibility          : 52033
+precipitation       :     0
+dewpoint            : 52033
+10min               :     0
+wind_sust           :     0
+wind_gust           : 52033
+dewpoint_delta      : 52033
+status              :     0
+-----------------------------
+
+1997
+Total rows          : 51589
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            : 15120
+wind_speed          :     0
+visibility          : 51589
+precipitation       :     0
+dewpoint            : 51589
+10min               :     0
+-----------------------------
+After prep
+1997
+Total rows          : 51589
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    23
+humidity            : 22762
+wind_speed          :     0
+visibility          : 51589
+precipitation       :     1
+dewpoint            : 51589
+10min               :     0
+wind_sust           :     0
+wind_gust           : 51589
+dewpoint_delta      : 51589
+status              :     0
+-----------------------------
+
+1998
+Total rows          : 51751
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     0
+wind_speed          :     0
+visibility          : 51751
+precipitation       :     0
+dewpoint            : 51751
+10min               :     0
+-----------------------------
+After prep
+1998
+Total rows          : 51751
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :  4463
+wind_speed          :     0
+visibility          : 51751
+precipitation       :     0
+dewpoint            : 51751
+10min               :     0
+wind_sust           :     0
+wind_gust           : 51751
+dewpoint_delta      : 51751
+status              :     0
+-----------------------------
+
+1999
+Total rows          : 49286
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     0
+wind_speed          :     0
+visibility          : 49286
+precipitation       :     0
+dewpoint            : 49286
+10min               :     0
+-----------------------------
+After prep
+1999
+Total rows          : 49286
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :  4541
+wind_speed          :     0
+visibility          : 49286
+precipitation       :     0
+dewpoint            : 49286
+10min               :     0
+wind_sust           :     0
+wind_gust           : 49286
+dewpoint_delta      : 49286
+status              :     0
+-----------------------------
+
+2000
+Total rows          : 51622
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     0
+wind_speed          :     0
+visibility          : 51622
+precipitation       :     0
+dewpoint            : 51622
+10min               :     0
+-----------------------------
+After prep
+2000
+Total rows          : 51622
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     2
+humidity            :  3813
+wind_speed          :     0
+visibility          : 51622
+precipitation       :     0
+dewpoint            : 51622
+10min               :     0
+wind_sust           :     0
+wind_gust           : 51622
+dewpoint_delta      : 51622
+status              :     0
+-----------------------------
+
+2001
+Total rows          : 49751
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     0
+wind_speed          :     0
+visibility          : 49751
+precipitation       :     0
+dewpoint            : 49751
+10min               :     0
+-----------------------------
+After prep
+2001
+Total rows          : 49751
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     3
+humidity            :  4616
+wind_speed          :     0
+visibility          : 49751
+precipitation       :     0
+dewpoint            : 49751
+10min               :     0
+wind_sust           :     0
+wind_gust           : 49751
+dewpoint_delta      : 49751
+status              :     0
+-----------------------------
+
+2002
+Total rows          : 51926
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     1
+wind_speed          :     0
+visibility          : 51926
+precipitation       :     0
+dewpoint            : 51926
+10min               :     0
+-----------------------------
+After prep
+2002
+Total rows          : 51926
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     1
+humidity            :     1
+wind_speed          :     0
+visibility          : 51926
+precipitation       :     1
+dewpoint            : 51926
+10min               :     0
+wind_sust           :     0
+wind_gust           : 51926
+dewpoint_delta      : 51926
+status              :     0
+-----------------------------
+
+2003
+Total rows          : 51684
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     0
+wind_speed          :     0
+visibility          : 51684
+precipitation       :     0
+dewpoint            : 51684
+10min               :     0
+-----------------------------
+After prep
+2003
+Total rows          : 51684
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     1
+humidity            :   397
+wind_speed          :     0
+visibility          : 51684
+precipitation       :     0
+dewpoint            : 51684
+10min               :     0
+wind_sust           :     0
+wind_gust           : 51684
+dewpoint_delta      : 51684
+status              :     0
+-----------------------------
+
+2004
+Total rows          : 51742
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     0
+wind_speed          :     0
+visibility          : 51742
+precipitation       :     0
+dewpoint            : 51742
+10min               :     0
+-----------------------------
+After prep
+2004
+Total rows          : 51742
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :  1258
+wind_speed          :     0
+visibility          : 51742
+precipitation       :     0
+dewpoint            : 51742
+10min               :     0
+wind_sust           :     0
+wind_gust           : 51742
+dewpoint_delta      : 51742
+status              :     0
+-----------------------------
+
+2005
+Total rows          : 50517
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     0
+humidity            :     0
+wind_speed          :     0
+visibility          : 50516
+precipitation       :     0
+dewpoint            : 50517
+10min               :     0
+-----------------------------
+After prep
+2005
+Total rows          : 50517
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     1
+humidity            :  2961
+wind_speed          :     0
+visibility          : 50516
+precipitation       :     0
+dewpoint            : 50517
+10min               :     0
+wind_sust           :     0
+wind_gust           : 50517
+dewpoint_delta      : 50517
+status              :     0
+-----------------------------
+
+2006
+Total rows          : 585502
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    466
+humidity            :    528
+wind_speed          :      0
+visibility          :  33108
+precipitation       :  20675
+dewpoint            : 585502
+10min               :      0
+-----------------------------
+After prep
+2006
+Total rows          : 585502
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    490
+humidity            :    761
+wind_speed          :   1883
+visibility          :  35214
+precipitation       :  20675
+dewpoint            : 585502
+10min               :      0
+wind_sust           :   1679
+wind_gust           :  34991
+dewpoint_delta      : 585502
+status              :      0
+-----------------------------
+
+2007
+Total rows          : 3010702
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   37813
+humidity            :   38004
+wind_speed          :       0
+visibility          :       0
+precipitation       :   12359
+dewpoint            : 3010702
+10min               :       0
+-----------------------------
+After prep
+2007
+Total rows          : 3010702
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   37822
+humidity            :   38013
+wind_speed          :   60929
+visibility          :  145478
+precipitation       :   12359
+dewpoint            : 3010702
+10min               :       0
+wind_sust           :   50210
+wind_gust           :   60929
+dewpoint_delta      : 3010702
+status              :       0
+-----------------------------
+
+2008
+Total rows          : 3067178
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   21654
+humidity            :   21654
+wind_speed          :       0
+visibility          :       0
+precipitation       :      27
+dewpoint            : 3067178
+10min               :       0
+-----------------------------
+After prep
+2008
+Total rows          : 3067178
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   21654
+humidity            :   21654
+wind_speed          :   34111
+visibility          :   23241
+precipitation       :      27
+dewpoint            : 3067178
+10min               :       0
+wind_sust           :   32541
+wind_gust           :   34111
+dewpoint_delta      : 3067178
+status              :       0
+-----------------------------
+
+2009
+Total rows          : 3084202
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    5228
+humidity            :    5228
+wind_speed          :       0
+visibility          :       0
+precipitation       :    3088
+dewpoint            : 3084202
+10min               :       0
+-----------------------------
+After prep
+2009
+Total rows          : 3084202
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    5228
+humidity            :    5228
+wind_speed          :    6990
+visibility          :   13745
+precipitation       :    3088
+dewpoint            : 3084202
+10min               :       0
+wind_sust           :    6564
+wind_gust           :    6990
+dewpoint_delta      : 3084202
+status              :       0
+-----------------------------
+
+2010
+Total rows          : 3085322
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   11177
+humidity            :   11173
+wind_speed          :       0
+visibility          :       0
+precipitation       :     126
+dewpoint            : 3085322
+10min               :       0
+-----------------------------
+After prep
+2010
+Total rows          : 3085322
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   11177
+humidity            :   11173
+wind_speed          :   14897
+visibility          :   74875
+precipitation       :     126
+dewpoint            : 3085322
+10min               :       0
+wind_sust           :    8097
+wind_gust           :   14897
+dewpoint_delta      : 3085322
+status              :       0
+-----------------------------
+
+2011
+Total rows          : 2959276
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   59766
+humidity            :   59692
+wind_speed          :       0
+visibility          :       0
+precipitation       :    1157
+dewpoint            : 2959276
+10min               :       0
+-----------------------------
+After prep
+2011
+Total rows          : 2959276
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   59766
+humidity            :   59692
+wind_speed          :   65394
+visibility          :   96779
+precipitation       :    5905
+dewpoint            : 2959276
+10min               :       0
+wind_sust           :   15122
+wind_gust           :   65394
+dewpoint_delta      : 2959276
+status              :       0
+-----------------------------
+
+2012
+Total rows          : 2783366
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   40112
+humidity            :   40091
+wind_speed          :       0
+visibility          :       0
+precipitation       :  673930
+dewpoint            : 2246641
+10min               :       0
+-----------------------------
+After prep
+2012
+Total rows          : 2783366
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   40112
+humidity            :   40091
+wind_speed          :   40611
+visibility          :  131565
+precipitation       :  673983
+dewpoint            : 2272284
+10min               :       0
+wind_sust           :   39029
+wind_gust           :   40611
+dewpoint_delta      : 2278781
+status              :       0
+-----------------------------
+
+2013
+Total rows          : 3177123
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   10314
+humidity            :   10299
+wind_speed          :       0
+visibility          :       0
+precipitation       : 3177123
+dewpoint            :       0
+10min               :       0
+-----------------------------
+After prep
+2013
+Total rows          : 3177123
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   10314
+humidity            :   10299
+wind_speed          :   18881
+visibility          :   84112
+precipitation       : 3177123
+dewpoint            :  730938
+10min               :       0
+wind_sust           :   17084
+wind_gust           :   18881
+dewpoint_delta      :  734924
+status              :       0
+-----------------------------
+
+2014
+Total rows          : 2999557
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   11627
+humidity            :   11623
+wind_speed          :       0
+visibility          :       0
+precipitation       : 2999557
+dewpoint            :       0
+10min               :       0
+-----------------------------
+After prep
+2014
+Total rows          : 2999557
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   11627
+humidity            :   11623
+wind_speed          :   12022
+visibility          :  317180
+precipitation       : 2999557
+dewpoint            : 1411111
+10min               :       0
+wind_sust           :   11186
+wind_gust           :   12022
+dewpoint_delta      : 1411969
+status              :       0
+-----------------------------
+
+2015
+Total rows          : 2990967
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   46467
+humidity            :   46261
+wind_speed          :       0
+visibility          :       0
+precipitation       : 2990967
+dewpoint            :       0
+10min               :       0
+-----------------------------
+After prep
+2015
+Total rows          : 2990967
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   46467
+humidity            :   46261
+wind_speed          :   47007
+visibility          :   88006
+precipitation       : 2990967
+dewpoint            : 1161457
+10min               :       0
+wind_sust           :    8302
+wind_gust           :   47007
+dewpoint_delta      : 1178358
+status              :       0
+-----------------------------
+
+2016
+Total rows          : 3075274
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    2552
+humidity            :    2528
+wind_speed          :       0
+visibility          :       0
+precipitation       : 3075274
+dewpoint            :       0
+10min               :       0
+-----------------------------
+After prep
+2016
+Total rows          : 3075274
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    2552
+humidity            :    2528
+wind_speed          :    2882
+visibility          :   41084
+precipitation       : 3075274
+dewpoint            :  956812
+10min               :       0
+wind_sust           :    2273
+wind_gust           :    2882
+dewpoint_delta      :  957824
+status              :       0
+-----------------------------
+
+2017
+Total rows          : 3008821
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    1601
+humidity            :    1584
+wind_speed          :       0
+visibility          :       0
+precipitation       : 3008820
+dewpoint            :       0
+10min               :       0
+-----------------------------
+After prep
+2017
+Total rows          : 3008821
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    1601
+humidity            :    1584
+wind_speed          :    2574
+visibility          :   89943
+precipitation       : 3008820
+dewpoint            : 1115156
+10min               :       0
+wind_sust           :    1917
+wind_gust           :    2574
+dewpoint_delta      : 1115375
+status              :       0
+-----------------------------
+
+2018
+Total rows          : 2968957
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :    2991
+humidity            :    2990
+wind_speed          :    2099
+visibility          :   12294
+precipitation       : 2968957
+dewpoint            :  182831
+10min               :       0
+-----------------------------
+After prep
+2018
+Total rows          : 2968957
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :   47458
+humidity            :   47453
+wind_speed          :   47726
+visibility          :  105445
+precipitation       : 2968957
+dewpoint            : 1067325
+10min               :       0
+wind_sust           :   47077
+wind_gust           :   47726
+dewpoint_delta      : 1070243
+status              :       0
+-----------------------------
+
+2019
+Total rows          : 2422740
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :  228594
+humidity            :  228594
+wind_speed          :   26316
+visibility          :  600314
+precipitation       : 2422740
+dewpoint            :  492633
+10min               :       2
+-----------------------------
+After prep
+2019
+Total rows          : 2422740
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :  228594
+humidity            :  228594
+wind_speed          :   26316
+visibility          :  600314
+precipitation       : 2422740
+dewpoint            :  860888
+10min               :       2
+wind_sust           :   21934
+wind_gust           :   26318
+dewpoint_delta      : 1023408
+status              :       0
+-----------------------------
+
+2022
+Total rows          : 42838
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     6
+humidity            :     6
+wind_speed          :     3
+visibility          :    11
+precipitation       : 42838
+dewpoint            : 38521
+10min               : 42838
+-----------------------------
+After prep
+2022
+Total rows          : 42838
+-----------------------------
+Column                 NaNs
+-----------------------------
+temperature         :     6
+humidity            :     6
+wind_speed          :     3
+visibility          :    11
+precipitation       : 42838
+dewpoint            : 38521
+10min               : 42838
+wind_sust           :     0
+wind_gust           : 42838
+dewpoint_delta      : 38521
+status              :     0
+-----------------------------

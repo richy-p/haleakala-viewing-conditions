@@ -129,6 +129,12 @@ dmypy.json
 .pyre/
 
 # data files (will only include a subset)
-*.csv
-proposal/
+data/*.csv
+status_hours_*.csv
 .vscode/
+
+
+# will add to github later
+proposal/
+notes.md
+
