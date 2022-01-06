@@ -1,0 +1,12 @@
+Thresholds:
+{'humidity': (75, 85), 'wind_sust': (10, 12), 'wind_gust': (15, 15), 'visibility': (50000, 40000), 'precipitation': (0, 0), 'dewpoint_delta': (6, 3)}
+
+Valid Range Limits:
+{'temperature': (-273, 40), 'humidity': (0, 100), 'wind_speed': (0, 100), 'visibility': (0, 100000), 'precipitation': (0, 100), 'dewpoint': (-273, 40)}
+
+Years included: 
+['1994', '1995', '1996', '1997', '1998', '1999', '2000', '2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008', '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2022']
+
+
+The family-wise error rate for alpha=0.05 and 66 combinations is: 0.9661344643619678
+Apply a Bonferroni correction and use an adjusted alpha of 0.00076
